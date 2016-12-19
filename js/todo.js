@@ -10,13 +10,13 @@ console.log(valueTask);
 // console.log(list);
 let id = new Date().getTime();
 let newTaskA = document.createElement('a');
-newTaskA.className = "collection-item";
+newTaskA.className = `collection-item ${id}`;
 let newTaskForm = document.createElement('form');
 let newTaskInput = document.createElement('input');
 newTaskInput.type = "checkbox";
 newTaskInput.setAttribute(`id`, id);
 let newTaskLabel = document.createElement('label');
-newTaskLabel.type = "checkbox";
+newTaskLabel.className = "teal-text";
 newTaskLabel.setAttribute(`for`, id);
 newTaskLabel.innerText = valueTask;
 let newTaskIcon = document.createElement('i');
@@ -34,6 +34,8 @@ event.preventDefault();
 todoList.push(newTaskA);
 // console.log(newTaskA);
 document.querySelector("#textarea1").value = "";
+
+console.log('console.log(todoList);', todoList);
 });
 
 list.addEventListener ('click', (event) => {
@@ -47,10 +49,17 @@ list.addEventListener ('click', (event) => {
     };
 
     // event.preventDefault();
+    console.log(event);
 
     if(event.target.tagName === 'I') {
-
-    }
-    ;
+        for(key in todoList) {
+            for(jey in todoList[key]) {
+                if(event.target.parentNode.parentNode.className.split(" ")[1] === todoList[key].className.split(" ")[1]) {
+                    delete todoList[key];
+                };
+            };
+        };
+        console.log(event.target.parentNode.parentNode.className.split(" ")[1]);
+    };
 });
 
