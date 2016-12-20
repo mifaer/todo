@@ -11,10 +11,10 @@
         let newTaskForm = document.createElement('form');
         let newTaskInput = document.createElement('input');
         newTaskInput.type = 'checkbox';
-        newTaskInput.setAttribute(`id`, id);
+        newTaskInput.setAttribute('id', `${id}`);
         let newTaskLabel = document.createElement('label');
         newTaskLabel.className = 'teal-text';
-        newTaskLabel.setAttribute(`for`, id);
+        newTaskLabel.setAttribute('for', `${id}`);
         newTaskLabel.innerText = valueTask;
         let newTaskIcon = document.createElement('i');
         newTaskIcon.className = 'small material-icons right';
@@ -37,7 +37,6 @@
     });
 
     list.addEventListener('click', (event) => {
-        let idPerformTask = event.target.htmlFor;
         if (event.target.tagName === 'LABEL') {
             if (event.target.style.textDecoration === 'line-through') {
                 event.target.style = 'text-decoration:none';
@@ -48,20 +47,16 @@
         ;
 
         if (event.target.tagName === 'I') {
-            for (key in todoList) {
-                for (jey in todoList[key]) {
+            for (let key in todoList) {
+                for (let jey in todoList[key]) {
                     if (event.target.parentNode.parentNode.className.split(" ")[1] === todoList[key].className.split(" ")[1]) {
                         delete todoList[key];
                         let elem = event.target.parentNode.parentNode;
                         elem.remove();
                     }
-                    ;
                 }
-                ;
             }
-            ;
         }
-        ;
     });
 
 })();
