@@ -3,39 +3,37 @@ let list = document.querySelector(".container > .collection");
 
 addBtn.addEventListener ('click', (event) => {
     let valueTask = document.querySelector("#textarea1").value;
-console.log(valueTask);
+    // console.log(valueTask);
+    // console.log(todoList);
+    // console.log(list);
+    let id = new Date().getTime();
+    let newTaskA = document.createElement('a');
+    newTaskA.className = `collection-item ${id}`;
+    let newTaskForm = document.createElement('form');
+    let newTaskInput = document.createElement('input');
+    newTaskInput.type = "checkbox";
+    newTaskInput.setAttribute(`id`, id);
+    let newTaskLabel = document.createElement('label');
+    newTaskLabel.className = "teal-text";
+    newTaskLabel.setAttribute(`for`, id);
+    newTaskLabel.innerText = valueTask;
+    let newTaskIcon = document.createElement('i');
+    newTaskIcon.className = "small material-icons right";
+    newTaskIcon.innerText = "delete";
 
-// console.log(todoList);
+    newTaskForm.appendChild(newTaskInput);
+    newTaskForm.appendChild(newTaskLabel);
+    newTaskForm.appendChild(newTaskIcon);
+    // console.log(newTaskForm);
+    newTaskA.append(newTaskForm);
+    list.appendChild(newTaskA);
 
-// console.log(list);
-let id = new Date().getTime();
-let newTaskA = document.createElement('a');
-newTaskA.className = `collection-item ${id}`;
-let newTaskForm = document.createElement('form');
-let newTaskInput = document.createElement('input');
-newTaskInput.type = "checkbox";
-newTaskInput.setAttribute(`id`, id);
-let newTaskLabel = document.createElement('label');
-newTaskLabel.className = "teal-text";
-newTaskLabel.setAttribute(`for`, id);
-newTaskLabel.innerText = valueTask;
-let newTaskIcon = document.createElement('i');
-newTaskIcon.className = "small material-icons right";
-newTaskIcon.innerText = "delete";
+    event.preventDefault();
+    todoList.push(newTaskA);
+    // console.log(newTask A);
+    document.querySelector("#textarea1").value = "";
 
-newTaskForm.appendChild(newTaskInput);
-newTaskForm.appendChild(newTaskLabel);
-newTaskForm.appendChild(newTaskIcon);
-// console.log(newTaskForm);
-newTaskA.append(newTaskForm);
-list.appendChild(newTaskA);
 
-event.preventDefault();
-todoList.push(newTaskA);
-// console.log(newTaskA);
-document.querySelector("#textarea1").value = "";
-
-console.log('console.log(todoList);', todoList);
 });
 
 list.addEventListener ('click', (event) => {
@@ -49,17 +47,22 @@ list.addEventListener ('click', (event) => {
     };
 
     // event.preventDefault();
-    console.log(event);
+    // console.log(event);
 
     if(event.target.tagName === 'I') {
+        // console.log(event.target.tagName);
         for(key in todoList) {
             for(jey in todoList[key]) {
                 if(event.target.parentNode.parentNode.className.split(" ")[1] === todoList[key].className.split(" ")[1]) {
+                    // console.log('todoList[key]:', todoList[key]);
                     delete todoList[key];
+                    let elem = event.target.parentNode.parentNode;
+                    elem.remove();
                 };
             };
         };
-        console.log(event.target.parentNode.parentNode.className.split(" ")[1]);
+        // console.log(event.target.parentNode.parentNode.className.split(" ")[1]);
+        // console.log('console.log(todoList);', todoList);
     };
 });
 
