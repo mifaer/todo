@@ -4,50 +4,13 @@
     let list = document.querySelector('.container > .collection');
     let newTaskBtn = document.querySelector('#addBtn');
 
-    newTaskBtn.addEventListener('click', (event) => {
+    firstRender();
+
+    newTaskBtn.addEventListener('click', () => {
         let id = new Date().getTime();
         let valueTask = document.querySelector('#textarea1').value;
-        let newTaskA = document.createElement('a');
-
-        newTaskA.className = `collection-item id-${id}`;
-        let newTaskForm = document.createElement('form');
-        let newTaskInput = document.createElement('input');
-
-        newTaskInput.type = 'checkbox';
-        newTaskInput.setAttribute('id', `id-${id}`);
-        let newTaskLabel = document.createElement('label');
-        newTaskLabel.className = 'teal-text';
-        newTaskLabel.setAttribute('for', `id-${id}`);
-        newTaskLabel.innerText = valueTask;
-        let newTaskIcon = document.createElement('i');
-        newTaskIcon.className = 'small material-icons right';
-        newTaskIcon.style.cursor = 'pointer';
-        newTaskIcon.innerText = 'delete';
-
-        newTaskForm.appendChild(newTaskInput);
-        newTaskForm.appendChild(newTaskLabel);
-        newTaskForm.appendChild(newTaskIcon);
-
-        newTaskA.appendChild(newTaskForm);
-        list.appendChild(newTaskA);
-
-        event.preventDefault();
-        todoList.push(newTaskA);
-        addToLocalArr();
-
-/*        let stateTask = event.target.style.textDecoration;
-        let obj = {};
-        obj.text = valueTask;
-        obj.state = stateTask;
-        todoLocal.push(obj);*/
-        // copyTodoArray();
-        cacheContainer('set');
-        counter();
-        document.querySelector('#textarea1').value = '';
-        console.log('todoList:', todoList);
-        console.log(id, new Date().getTime());
+        renderList(id, valueTask);
     });
-
     list.addEventListener('click', (event) => {
         let id;
         if (event.target.tagName === 'LABEL') {
@@ -64,13 +27,50 @@
         }
     });
 
+    function firstRender() {
+        todoLocal = JSON.parse(localStorage.getItem('todoLocal')) || [];
+        if(todoLocal.length) {
+            for(let item of todoLocal)
+                renderList(item.id, item.text, item.state);
+        }
+    }
+    function renderList(id, valueTask = todoLocal.text, state) {
+        let newTaskA = document.createElement('a');
+        newTaskA.className = `collection-item id-${id}`;
+        let newTaskForm = document.createElement('form');
+        let newTaskInput = document.createElement('input');
+        newTaskInput.type = 'checkbox';
+        newTaskInput.setAttribute('id', `id-${id}`);
+
+        newTaskInput.checked = (state === 'line-through') ? true : false;
+        let newTaskLabel = document.createElement('label');
+        newTaskLabel.className = 'teal-text';
+        newTaskLabel.setAttribute('for', `id-${id}`);
+        newTaskLabel.style.textDecoration = state || '';
+        newTaskLabel.innerText = `${valueTask}`;
+        let newTaskIcon = document.createElement('i');
+        newTaskIcon.className = 'small material-icons right';
+        newTaskIcon.style.cursor = 'pointer';
+        newTaskIcon.innerText = 'delete';
+
+        newTaskForm.appendChild(newTaskInput);
+        newTaskForm.appendChild(newTaskLabel);
+        newTaskForm.appendChild(newTaskIcon);
+        newTaskA.appendChild(newTaskForm);
+        list.appendChild(newTaskA);
+        todoList.push(newTaskA);
+
+        addToLocalArr();
+        cacheContainer('set');
+        counter();
+        document.querySelector('#textarea1').value = '';
+    }
     function toggleToDo(event) {
         if (event.target.style.textDecoration === 'line-through') {
             return event.target.style = 'text-decoration:none';
         } else {
             return event.target.style = 'text-decoration:line-through';
         }
-
     }
     function deleteToDo(event) {
         for (let key in todoList) {
@@ -87,7 +87,6 @@
                 elem.remove();
             }
         }
-
     }
     function counter() {
         let taskCounter = document.querySelector('.container > .title');
@@ -121,19 +120,16 @@
         console.log('event', event);
         console.log('todoLocal', todoLocal);
     }
-
     function addToLocalArr() {
         for(let key in todoList) {
-            let taskText = todoList[key].childNodes["0"].childNodes[1].textContent;
-            let taskState = todoList[key].style.textDecoration;
+            let taskText = todoList[key].childNodes['0'].childNodes[1].textContent;
+            let taskState = todoList[key].childNodes['0'].childNodes[1].style.textDecoration;
             let id = todoList[key].className.split('id-')[1];
             let obj = {};
             obj.id = `${id}`;
             obj.text = taskText;
             obj.state = taskState;
             todoLocal[key] = obj;
-        };
-        console.log('todoLocal', todoLocal);
+        }
     }
-
 })();
